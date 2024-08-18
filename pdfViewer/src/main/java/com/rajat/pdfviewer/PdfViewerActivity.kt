@@ -245,23 +245,6 @@ class PdfViewerActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        if (intent.extras!!.containsKey(FILE_URL)) {
-            fileUrl = intent.extras!!.getString(FILE_URL)
-            if (isPDFFromPath) {
-                initPdfViewerWithPath(this.fileUrl)
-            } else {
-                if (checkInternetConnection(this)) {
-                    loadFileFromNetwork(this.fileUrl)
-                } else {
-                    Toast.makeText(
-                        this,
-                        error_no_internet_connection,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-
         binding.pdfView.statusListener = object : PdfRendererView.StatusCallBack {
             override fun onPdfLoadStart() {
                 runOnUiThread {
@@ -293,6 +276,23 @@ class PdfViewerActivity : AppCompatActivity() {
 
             override fun onPageChanged(currentPage: Int, totalPage: Int) {
                 //Page change. Not require
+            }
+        }
+
+        if (intent.extras!!.containsKey(FILE_URL)) {
+            fileUrl = intent.extras!!.getString(FILE_URL)
+            if (isPDFFromPath) {
+                initPdfViewerWithPath(this.fileUrl)
+            } else {
+                if (checkInternetConnection(this)) {
+                    loadFileFromNetwork(this.fileUrl)
+                } else {
+                    Toast.makeText(
+                        this,
+                        error_no_internet_connection,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
